@@ -1,298 +1,1238 @@
 <!DOCTYPE html>
-<html lang="si">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zindagi fashion</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #121212;
-            color: white;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zindagi Fashion — Premium Tailoring & Design</title>
 
-        header {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 15px 0;
-            box-shadow: 0 4px 8px rgba(255, 215, 0, 0.5); /* Gold shadow */
-        }
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
 
-        nav {
-            display: flex;
-            justify-content: center;
-            background-color: #444;
-            padding: 10px 0;
-            animation: navAnimation 0.5s ease-in-out;
-        }
+  <style>
+    /* ─── CSS VARIABLES ─────────────────────────────────── */
+    :root {
+      --black:       #0a0a0a;
+      --charcoal:    #141414;
+      --surface:     #1c1c1c;
+      --surface-2:   #242424;
+      --gold:        #c9a84c;
+      --gold-light:  #e2c27d;
+      --gold-dim:    rgba(201,168,76,0.18);
+      --white:       #f5f0eb;
+      --muted:       #888078;
+      --border:      rgba(201,168,76,0.22);
 
-        nav a {
-            padding: 14px 20px;
-            color: white;
-            text-decoration: none;
-            text-align: center;
-            flex: 1;
-            background-color: #333;
-            margin: 0 5px;
-            border-radius: 5px;
-            transition: background-color 0.3s, transform 0.3s;
-        }
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-serif:   'Cormorant Garamond', Georgia, serif;
+      --font-body:    'Jost', sans-serif;
 
-        nav a:hover {
-            background-color: #FFD700; /* Gold color */
-            color: black;
-            transform: translateY(-5px); /* Lift effect */
-        }
+      --nav-h: 72px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
 
-        @keyframes navAnimation {
-            0% {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    /* ─── RESET ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: default;
+    }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    img { display: block; max-width: 100%; }
 
-        section {
-            padding: 20px;
-        }
+    /* ─── CUSTOM CURSOR ─────────────────────────────────── */
+    .cursor-dot, .cursor-ring {
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s;
+    }
+    .cursor-dot  { width: 6px; height: 6px; background: var(--gold); }
+    .cursor-ring {
+      width: 32px; height: 32px;
+      border: 1px solid var(--gold);
+      transition: transform 0.12s var(--ease), width 0.25s var(--ease), height 0.25s var(--ease);
+    }
+    body:hover .cursor-dot, body:hover .cursor-ring { opacity: 1; }
 
-        .home {
-            background-image: url('https://zindagifashion.github.io/website/Home.jpg');
-            background-size: cover;
-            background-position: center center;
-            height: 300px;
-            color: white;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 8px rgba(255, 215, 0, 0.7); /* Gold shadow */
-            animation: fadeIn 1s ease-in-out;
-        }
+    /* ─── SCROLL REVEAL ─────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left  { opacity: 0; transform: translateX(-50px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+    .reveal-right { opacity: 0; transform: translateX(50px);  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+    .reveal-left.visible, .reveal-right.visible { opacity: 1; transform: translateX(0); }
+    .delay-1 { transition-delay: 0.12s; }
+    .delay-2 { transition-delay: 0.24s; }
+    .delay-3 { transition-delay: 0.36s; }
+    .delay-4 { transition-delay: 0.48s; }
 
-        .home h1 {
-            font-size: 3em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-        }
+    /* ─── NAV ───────────────────────────────────────────── */
+    nav#main-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6vw;
+      transition: background 0.5s var(--ease), backdrop-filter 0.5s;
+    }
+    nav#main-nav.scrolled {
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
 
-        .contact, .services {
-            background-color: #222;
-            margin: 20px 0;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(255, 215, 0, 0.5); /* Gold shadow */
-            animation: fadeIn 1s ease-in-out;
-        }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--gold);
+    }
+    .nav-logo span { font-style: italic; font-weight: 400; color: var(--white); }
 
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-            box-shadow: 0 4px 8px rgba(255, 215, 0, 0.5); /* Gold shadow */
-        }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+    }
+    .nav-links a {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--white);
+      position: relative;
+      padding-bottom: 3px;
+      transition: color 0.3s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width 0.4s var(--ease);
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
 
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
+    /* Hamburger */
+    .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .nav-toggle span { display: block; width: 26px; height: 1.5px; background: var(--white); transition: all 0.4s; }
 
-    </style>
+    /* ─── HERO ──────────────────────────────────────────── */
+    #home {
+      position: relative;
+      height: 100svh;
+      min-height: 620px;
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 10vh;
+      padding-left: 8vw;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://zindagifashion.github.io/website/Home.jpg');
+      background-size: cover;
+      background-position: center 30%;
+      transform: scale(1.06);
+      animation: heroScale 12s var(--ease) forwards;
+    }
+
+    @keyframes heroScale {
+      to { transform: scale(1); }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to right,
+        rgba(10,10,10,0.88) 0%,
+        rgba(10,10,10,0.55) 50%,
+        rgba(10,10,10,0.15) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.4s var(--ease) forwards;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.08;
+      margin-bottom: 1.4rem;
+      opacity: 0;
+      animation: fadeUp 1s 0.6s var(--ease) forwards;
+    }
+    .hero-title em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--gold-light);
+      display: block;
+    }
+
+    .hero-sub {
+      font-family: var(--font-serif);
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: rgba(245,240,235,0.72);
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+      letter-spacing: 0.01em;
+      opacity: 0;
+      animation: fadeUp 1s 0.8s var(--ease) forwards;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.9rem;
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 1rem 2rem;
+      transition: background 0.4s, color 0.4s;
+      opacity: 0;
+      animation: fadeUp 1s 1s var(--ease) forwards;
+    }
+    .hero-cta:hover { background: var(--gold); color: var(--black); }
+    .hero-cta svg { transition: transform 0.4s var(--ease); }
+    .hero-cta:hover svg { transform: translateX(5px); }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      right: 6vw;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0;
+      animation: fadeIn 1s 1.4s forwards;
+    }
+    .hero-scroll span {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      writing-mode: vertical-rl;
+    }
+    .hero-scroll-line {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollLine 2s 2s infinite;
+    }
+    @keyframes scrollLine {
+      0%   { transform: scaleY(0); transform-origin: top; }
+      50%  { transform: scaleY(1); transform-origin: top; }
+      51%  { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ─── SECTION COMMONS ───────────────────────────────── */
+    section { padding: 8rem 8vw; }
+
+    .section-label {
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4.5vw, 3.4rem);
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+    }
+    .section-title em { font-style: italic; color: var(--gold-light); }
+
+    .section-intro {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      color: rgba(245,240,235,0.65);
+      max-width: 540px;
+      line-height: 1.8;
+    }
+
+    /* ─── STRIP / MARQUEE ───────────────────────────────── */
+    .marquee-strip {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      overflow: hidden;
+      padding: 1rem 0;
+    }
+    .marquee-track {
+      display: flex;
+      gap: 3rem;
+      width: max-content;
+      animation: marquee 30s linear infinite;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .marquee-item {
+      font-family: var(--font-serif);
+      font-size: 0.9rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .marquee-item::after {
+      content: '✦';
+      font-size: 0.55rem;
+      color: var(--gold);
+    }
+
+    /* ─── SERVICES ──────────────────────────────────────── */
+    #services {
+      background: var(--charcoal);
+      position: relative;
+    }
+    #services::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 40%;
+      height: 1px;
+      background: linear-gradient(to right, var(--gold), transparent);
+    }
+
+    .services-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: end;
+      margin-bottom: 5rem;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .service-card {
+      background: var(--charcoal);
+      padding: 2.5rem 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.4s var(--ease);
+      cursor: default;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 2px; width: 0;
+      background: var(--gold);
+      transition: width 0.5s var(--ease);
+    }
+    .service-card:hover { background: var(--surface-2); }
+    .service-card:hover::before { width: 100%; }
+
+    .service-num {
+      font-family: var(--font-serif);
+      font-size: 0.75rem;
+      color: var(--gold);
+      letter-spacing: 0.2em;
+      margin-bottom: 1.5rem;
+      opacity: 0.7;
+    }
+
+    .service-icon {
+      width: 36px; height: 36px;
+      margin-bottom: 1.4rem;
+      color: var(--gold);
+      opacity: 0.8;
+    }
+
+    .service-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.18rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
+      line-height: 1.3;
+    }
+
+    .service-card p {
+      font-size: 0.82rem;
+      color: rgba(245,240,235,0.5);
+      line-height: 1.75;
+    }
+
+    .service-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 1.5rem;
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .service-card:hover .service-arrow { opacity: 1; transform: translateX(0); }
+
+    /* ─── BRAND PROMISE BAND ────────────────────────────── */
+    .promise-band {
+      background: var(--gold);
+      color: var(--black);
+      padding: 4.5rem 8vw;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .promise-band h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .promise-band h2 em { font-style: italic; font-weight: 400; }
+
+    .promise-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .promise-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(10,10,10,0.8);
+    }
+    .promise-item::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: var(--black);
+      flex-shrink: 0;
+    }
+
+    /* ─── CONTACT ───────────────────────────────────────── */
+    #contact {
+      background: var(--black);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+      padding-top: 9rem;
+      padding-bottom: 9rem;
+    }
+
+    .contact-info { display: flex; flex-direction: column; gap: 0; }
+
+    .contact-detail {
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .contact-detail:first-of-type { border-top: 1px solid var(--border); }
+
+    .contact-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+    }
+    .contact-value {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 300;
+      letter-spacing: 0.01em;
+      color: var(--white);
+    }
+    .contact-value a:hover { color: var(--gold); transition: color 0.3s; }
+
+    .contact-cta {
+      margin-top: 2.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.9rem;
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--gold);
+      padding: 1rem 2rem;
+      font-weight: 500;
+      transition: background 0.35s, color 0.35s;
+    }
+    .contact-cta:hover { background: var(--gold-light); }
+
+    /* Map */
+    .map-wrapper {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 0 0 1px var(--border), 0 24px 60px rgba(0,0,0,0.6);
+    }
+    .map-wrapper::before {
+      content: 'OUR LOCATION';
+      display: block;
+      background: var(--surface);
+      padding: 0.9rem 1.5rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-body);
+      font-weight: 500;
+    }
+    .map-wrapper iframe {
+      display: block;
+      width: 100%;
+      height: 340px;
+      border: none;
+      filter: grayscale(0.3) contrast(1.05);
+    }
+
+    /* ─── FOOTER ────────────────────────────────────────── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 3rem 8vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      color: var(--gold);
+    }
+    .footer-logo span { font-style: italic; font-weight: 300; color: var(--muted); }
+
+    .footer-copy {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.8rem;
+    }
+    .footer-links a {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--gold); }
+
+    /* ─── MOBILE NAV OVERLAY ────────────────────────────── */
+    .nav-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: var(--black);
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 2.5rem;
+      opacity: 0;
+      transition: opacity 0.4s var(--ease);
+    }
+    .nav-overlay.open { display: flex; opacity: 1; }
+    .nav-overlay a {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 400;
+      color: var(--white);
+      letter-spacing: 0.04em;
+      transition: color 0.3s;
+    }
+    .nav-overlay a:hover { color: var(--gold); }
+    .nav-overlay .close-btn {
+      position: absolute;
+      top: 1.5rem; right: 6vw;
+      font-size: 1.8rem;
+      color: var(--muted);
+      cursor: pointer;
+      background: none; border: none;
+    }
+
+    /* ─── RESPONSIVE ────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .services-header { grid-template-columns: 1fr; gap: 1.5rem; }
+      .promise-band    { grid-template-columns: 1fr; gap: 2.5rem; }
+      #contact         { grid-template-columns: 1fr; gap: 4rem; }
+      footer           { flex-direction: column; text-align: center; align-items: center; }
+    }
+
+    @media (max-width: 700px) {
+      section { padding: 5rem 6vw; }
+      .nav-links { display: none; }
+      .nav-toggle { display: flex; }
+      .hero-scroll { display: none; }
+      .services-grid { grid-template-columns: 1fr; }
+      .promise-band { padding: 3.5rem 6vw; }
+    }
+
+    /* ─── GOLD GRADIENT LINE ────────────────────────────── */
+    .gold-line {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      opacity: 0.5;
+    }
+
+    /* ─── MAP VISIT BUTTON ──────────────────────────────── */
+    .map-visit-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      width: 100%;
+      padding: 1rem 1.5rem;
+      background: var(--surface-2);
+      border-top: 1px solid var(--border);
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      transition: background 0.35s var(--ease), color 0.35s;
+      cursor: pointer;
+    }
+    .map-visit-btn:hover {
+      background: var(--gold);
+      color: var(--black);
+    }
+    .map-visit-btn svg { flex-shrink: 0; }
+
+    /* ─── SHOP SECTION ──────────────────────────────────── */
+    .shop-section {
+      position: relative;
+      background: var(--black);
+      padding: 7rem 8vw;
+      text-align: center;
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+    }
+    /* Radial gold glow behind text */
+    .shop-section::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px; height: 400px;
+      background: radial-gradient(ellipse at center, rgba(201,168,76,0.14) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    /* Decorative corner lines */
+    .shop-section::after {
+      content: '';
+      position: absolute;
+      inset: 24px;
+      border: 1px solid var(--border);
+      pointer-events: none;
+    }
+
+    .shop-eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .shop-eyebrow::before, .shop-eyebrow::after {
+      content: '';
+      display: block;
+      width: 36px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .shop-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.2rem;
+      color: var(--white);
+      position: relative;
+    }
+    .shop-title em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--gold-light);
+      display: block;
+    }
+
+    .shop-sub {
+      font-family: var(--font-serif);
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: rgba(245,240,235,0.55);
+      max-width: 520px;
+      margin: 0 auto 3rem;
+      line-height: 1.8;
+    }
+
+    .shop-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--gold);
+      color: var(--black);
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 1.3rem 3rem;
+      overflow: hidden;
+      transition: color 0.4s;
+      box-shadow: 0 0 0 0 rgba(201,168,76,0.5);
+      animation: shopPulse 2.6s ease-in-out infinite;
+    }
+    .shop-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold-light);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.45s var(--ease);
+    }
+    .shop-btn:hover::before { transform: scaleX(1); }
+    .shop-btn span, .shop-btn svg { position: relative; z-index: 1; }
+    .shop-btn:hover svg { transform: translateX(5px); transition: transform 0.35s var(--ease); }
+
+    @keyframes shopPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.45); }
+      50%       { box-shadow: 0 0 0 18px rgba(201,168,76,0); }
+    }
+
+    /* Floating badge */
+    .shop-badge {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      margin-top: 1.8rem;
+    }
+  </style>
 </head>
 <body>
 
-    <header style="text-align: center; padding: 20px;">
-    <h1 style="
-        color: gold; 
-        font-family: 'Pacifico', cursive; 
-        text-shadow: 2px 2px 5px black, 0 0 25px gold, 0 0 5px darkgoldenrod; 
-        animation: glowAnimation 1.5s ease-in-out infinite;
-    ">
-        Zindagi fashion
-    </h1>
-</header>
+  <!-- Custom cursor -->
+  <div class="cursor-dot"  id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
 
-<style>
-    @keyframes glowAnimation {
-        0% {
-            text-shadow: 0 0 10px gold, 0 0 20px gold, 0 0 30px gold, 0 0 40px darkgoldenrod;
-        }
-        50% {
-            text-shadow: 0 0 20px gold, 0 0 40px gold, 0 0 60px gold, 0 0 80px darkgoldenrod;
-        }
-        100% {
-            text-shadow: 0 0 10px gold, 0 0 20px gold, 0 0 30px gold, 0 0 40px darkgoldenrod;
-        }
-    }
-</style>
+  <!-- Mobile Nav Overlay -->
+  <div class="nav-overlay" id="navOverlay">
+    <button class="close-btn" id="navClose" aria-label="Close menu">✕</button>
+    <a href="#home"     onclick="closeNav()">Home</a>
+    <a href="#services" onclick="closeNav()">Services</a>
+    <a href="#contact"  onclick="closeNav()">Contact</a>
+  </div>
 
-<!-- Include Google Font link for Pacifico -->
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <!-- ─── NAVIGATION ─────────────────────────────── -->
+  <nav id="main-nav">
+    <div class="nav-logo">Zindagi <span>Fashion</span></div>
 
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#services">Services</a>
-        <a href="#contact">Contact</a>
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
+    </div>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ─── HERO ───────────────────────────────────── -->
+  <section id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow">Premium Tailoring &amp; Fashion Design</p>
+      <h1 class="hero-title">
+        Wear Your<br>
+        <em>Story.</em>
+      </h1>
+      <p class="hero-sub">
+        Bespoke garments crafted with precision — from custom designs to couture tailoring, every stitch tells who you are.
+      </p>
+      <a href="#services" class="hero-cta">
+        Explore Services
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+          <path d="M1 6h14M9.5 1l5.5 5-5.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ─── MARQUEE ─────────────────────────────────── -->
+  <div class="marquee-strip">
+    <div class="marquee-track" id="marqueeTrack">
+      <span class="marquee-item">Custom Fashion Design</span>
+      <span class="marquee-item">Men's &amp; Women's Wear</span>
+      <span class="marquee-item">Children's Clothing</span>
+      <span class="marquee-item">Sample Making</span>
+      <span class="marquee-item">T-Shirt Customization</span>
+      <span class="marquee-item">Expert Tailoring</span>
+      <span class="marquee-item">Bulk Orders</span>
+      <span class="marquee-item">Bespoke Craftsmanship</span>
+      <!-- duplicated for seamless loop -->
+      <span class="marquee-item">Custom Fashion Design</span>
+      <span class="marquee-item">Men's &amp; Women's Wear</span>
+      <span class="marquee-item">Children's Clothing</span>
+      <span class="marquee-item">Sample Making</span>
+      <span class="marquee-item">T-Shirt Customization</span>
+      <span class="marquee-item">Expert Tailoring</span>
+      <span class="marquee-item">Bulk Orders</span>
+      <span class="marquee-item">Bespoke Craftsmanship</span>
+    </div>
+  </div>
+
+  <!-- ─── SERVICES ────────────────────────────────── -->
+  <section id="services">
+    <div class="services-header">
+      <div>
+        <p class="section-label reveal">What We Offer</p>
+        <h2 class="section-title reveal delay-1">
+          Tailored for<br>
+          <em>Every Vision</em>
+        </h2>
+      </div>
+      <p class="section-intro reveal delay-2">
+        We offer a complete spectrum of professional design and tailoring services — whether you need a one-of-a-kind piece or precision craftsmanship at scale.
+      </p>
+    </div>
+
+    <div class="services-grid">
+
+      <!-- Card 1 -->
+      <div class="service-card reveal">
+        <div class="service-num">01</div>
+        <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M20 4 C12 4 6 10 6 18 C6 26 12 36 20 36 C28 36 34 26 34 18 C34 10 28 4 20 4Z"/>
+          <path d="M14 18 Q20 12 26 18"/>
+          <circle cx="20" cy="22" r="3"/>
+        </svg>
+        <h3>Fashion Design</h3>
+        <p>Custom-made designs for any occasion. Bringing your fashion ideas to life with creative solutions and a personal touch.</p>
+        <div class="service-arrow">
+          Enquire
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+            <path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="service-card reveal delay-1">
+        <div class="service-num">02</div>
+        <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M10 8 L10 32 M30 8 L30 32"/>
+          <path d="M10 20 Q20 14 30 20"/>
+          <path d="M13 8 L10 14 M27 8 L30 14"/>
+        </svg>
+        <h3>Men's &amp; Women's Clothing</h3>
+        <p>Personalized clothing designs for both men and women — casual and formal wear tailored to your preference with premium materials.</p>
+        <div class="service-arrow">
+          Enquire
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+            <path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="service-card reveal delay-2">
+        <div class="service-num">03</div>
+        <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
+          <circle cx="20" cy="14" r="5"/>
+          <path d="M10 32 Q10 22 20 22 Q30 22 30 32"/>
+          <path d="M6 38 L34 38"/>
+        </svg>
+        <h3>Children's Clothing</h3>
+        <p>Comfortable, stylish, and durable clothing for children — tailored for special occasions or everyday wear with both fashion and function.</p>
+        <div class="service-arrow">
+          Enquire
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+            <path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="service-card reveal delay-3">
+        <div class="service-num">04</div>
+        <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
+          <rect x="6" y="10" width="28" height="22" rx="2"/>
+          <path d="M6 16 H34"/>
+          <path d="M16 10 L16 6 M24 10 L24 6"/>
+          <path d="M12 23 H28 M12 28 H22"/>
+        </svg>
+        <h3>Sample Making for Shops</h3>
+        <p>High-quality sample creation for brands and shops. Perfecting designs before mass production ensures every spec is met.</p>
+        <div class="service-arrow">
+          Enquire
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+            <path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="service-card reveal">
+        <div class="service-num">05</div>
+        <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M10 14 L8 10 L16 10 L18 14 L22 14 L24 10 L32 10 L30 14"/>
+          <path d="M10 14 L10 34 L30 34 L30 14 Z"/>
+          <path d="M15 22 Q20 18 25 22"/>
+          <circle cx="20" cy="27" r="2"/>
+        </svg>
+        <h3>T-Shirt Customisation &amp; Artwork</h3>
+        <p>Custom-designed T-shirts for personal or business needs. Unique artwork and graphics printed on high-quality fabrics.</p>
+        <div class="service-arrow">
+          Enquire
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+            <path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="service-card reveal delay-1">
+        <div class="service-num">06</div>
+        <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M20 4 L34 12 L34 28 L20 36 L6 28 L6 12 Z"/>
+          <path d="M14 20 Q18 16 22 20 Q26 24 30 20"/>
+        </svg>
+        <h3>Tailoring Services</h3>
+        <p>Expert tailoring for custom clothing with alterations and adjustments for the perfect fit. High-quality stitching and finishing.</p>
+        <div class="service-arrow">
+          Enquire
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+            <path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Card 7 -->
+      <div class="service-card reveal delay-2">
+        <div class="service-num">07</div>
+        <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M8 32 L8 14 L20 6 L32 14 L32 32 Z"/>
+          <rect x="14" y="22" width="12" height="10"/>
+          <path d="M14 16 H26"/>
+        </svg>
+        <h3>Clothing Orders</h3>
+        <p>Custom orders for suits, dresses, and casual wear for individuals and bulk needs. Timely delivery with premium craftsmanship.</p>
+        <div class="service-arrow">
+          Enquire
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+            <path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Card 8 -->
+      <div class="service-card reveal delay-3">
+        <div class="service-num">08</div>
+        <svg class="service-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2">
+          <circle cx="20" cy="20" r="14"/>
+          <path d="M20 14 L20 20 L26 20"/>
+          <path d="M10 32 L8 36 M30 32 L32 36"/>
+        </svg>
+        <h3>And Much More…</h3>
+        <p>Have a specific need? Contact us. We offer a broad spectrum of design and tailoring services — your satisfaction is our priority.</p>
+        <div class="service-arrow">
+          Get in Touch
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+            <path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── PROMISE BAND ──────────────────────────────── -->
+  <div class="promise-band reveal">
+    <h2>Craftsmanship you can <em>feel</em> in every thread.</h2>
+    <ul class="promise-list">
+      <li class="promise-item">Premium quality materials</li>
+      <li class="promise-item">Precision-fit tailoring</li>
+      <li class="promise-item">On-time delivery, always</li>
+      <li class="promise-item">Your vision, our craft</li>
+    </ul>
+  </div>
+
+  <!-- ─── CONTACT ──────────────────────────────────── -->
+  <section id="contact">
+    <div class="contact-info">
+      <p class="section-label reveal">Get In Touch</p>
+      <h2 class="section-title reveal delay-1">
+        Let's Create<br>
+        <em>Together</em>
+      </h2>
+      <p class="section-intro reveal delay-2" style="margin-bottom: 3rem;">
+        Reach out to discuss your custom design or tailoring needs. We'd love to hear your ideas.
+      </p>
+
+      <div class="contact-detail reveal">
+        <span class="contact-label">WhatsApp</span>
+        <span class="contact-value">
+          <a href="https://wa.me/94715980834" target="_blank">+94 71 598 0834</a>
+        </span>
+      </div>
+
+      <div class="contact-detail reveal delay-1">
+        <span class="contact-label">Email</span>
+        <span class="contact-value">
+          <a href="mailto:zindagifashion1111@gmail.com">zindagifashion1111@gmail.com</a>
+        </span>
+      </div>
+
+      <div class="contact-detail reveal delay-2">
+        <span class="contact-label">Available</span>
+        <span class="contact-value" style="font-size:1rem; opacity:0.7;">Mon – Sat, 9 AM – 7 PM</span>
+      </div>
+
+      <a href="https://wa.me/94715980834" target="_blank" class="contact-cta reveal delay-3">
+        Message on WhatsApp
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+          <path d="M1 6h14M9.5 1l5.5 5-5.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Map -->
+    <div class="map-wrapper reveal delay-1">
+      <iframe
+        src="https://maps.app.goo.gl/RHZ3ybLn9ZMD1ArB7"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Zindagi Fashion Location">
+      </iframe>
+      <a href="https://maps.app.goo.gl/RHZ3ybLn9ZMD1ArB7" target="_blank" class="map-visit-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+          <circle cx="12" cy="9" r="2.5"/>
+        </svg>
+        Visit with Google Maps
+        <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+          <path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <div class="gold-line"></div>
+
+  <!-- ─── SHOP / BUY NOW ──────────────────────────────── -->
+  <section class="shop-section">
+    <p class="shop-eyebrow reveal">New Collection Available</p>
+    <h2 class="shop-title reveal delay-1">
+      Buy Our Brand<br>
+      <em>Clothing Now</em>
+    </h2>
+    <p class="shop-sub reveal delay-2">
+      Explore our exclusive collection — premium garments crafted with precision and passion, ready to wear today.
+    </p>
+    <a href="https://log-pg-zf.netlify.app/" target="_blank" class="shop-btn reveal delay-3">
+      <span>Shop the Collection</span>
+      <svg width="18" height="13" viewBox="0 0 18 13" fill="none">
+        <path d="M1 6.5h16M10.5 1l6 5.5-6 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </a>
+    <div class="shop-badge reveal delay-4">Secure &nbsp;·&nbsp; Fast Delivery &nbsp;·&nbsp; Premium Quality</div>
+  </section>
+
+  <div class="gold-line"></div>
+
+  <!-- ─── FOOTER ───────────────────────────────────── -->
+  <footer>
+    <div class="footer-logo">Zindagi <span>Fashion</span></div>
+    <p class="footer-copy">&copy; 2025 Zindagi Fashion. All rights reserved.</p>
+    <nav class="footer-links">
+      <a href="#home">Home</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
     </nav>
+  </footer>
 
-    <section id="home" class="home">
-       <!-- head -->
-    </section>
+  <!-- Tidio chatbot -->
+  <script src="//code.tidio.co/c8rwvx0qoimbujbtxzsor1re7icbvq14.js" async></script>
 
-    <section id="services" class="services" style="font-family: 'Arial', sans-serif; padding: 20px;">
-    <h2 id="heading" style="font-size: 2rem; color: gold; text-align: center; display: inline-block;"></h2>
-    <p id="intro" style="font-size: 1.2rem; color: white; text-align: center; display: inline-block;"></p>
+  <script>
+    /* ─── CURSOR ─────────────────────────────── */
+    const dot  = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
 
-    <div class="service-item" style="margin-bottom: 20px;">
-        <h3 id="service1" style="color: gold;"></h3>
-        <ul id="list1" style="color: white; display: none;">
-            <li>Custom-made designs for any occasion</li>
-            <li>Bringing your fashion ideas to life</li>
-            <li>Creative solutions for personal style</li>
-        </ul>
-    </div>
-
-    <div class="service-item" style="margin-bottom: 20px;">
-        <h3 id="service2" style="color: gold;"></h3>
-        <ul id="list2" style="color: white; display: none;">
-            <li>Personalized clothing designs for men and women</li>
-            <li>Casual and formal wear tailored to your preference</li>
-            <li>High-quality materials and finishes</li>
-        </ul>
-    </div>
-
-    <div class="service-item" style="margin-bottom: 20px;">
-        <h3 id="service3" style="color: gold;"></h3>
-        <ul id="list3" style="color: white; display: none;">
-            <li>Comfortable, stylish, and durable clothing for children</li>
-            <li>Tailored for special occasions or daily wear</li>
-            <li>Ensuring both functionality and fashion for kids</li>
-        </ul>
-    </div>
-
-    <div class="service-item" style="margin-bottom: 20px;">
-        <h3 id="service4" style="color: gold;"></h3>
-        <ul id="list4" style="color: white; display: none;">
-            <li>Creating high-quality samples for shops and brands</li>
-            <li>Perfecting designs before mass production</li>
-            <li>Ensuring designs meet your specifications</li>
-        </ul>
-    </div>
-
-    <div class="service-item" style="margin-bottom: 20px;">
-        <h3 id="service5" style="color: gold;"></h3>
-        <ul id="list5" style="color: white; display: none;">
-            <li>Custom-designed T-shirts for personal or business needs</li>
-            <li>Artwork and graphics printed on high-quality fabrics</li>
-            <li>Unique designs for promotional and personal use</li>
-        </ul>
-    </div>
-
-    <div class="service-item" style="margin-bottom: 20px;">
-        <h3 id="service6" style="color: gold;"></h3>
-        <ul id="list6" style="color: white; display: none;">
-            <li>Expert tailoring for custom clothing</li>
-            <li>Alterations and adjustments for the perfect fit</li>
-            <li>High-quality stitching and finishing</li>
-        </ul>
-    </div>
-
-    <div class="service-item" style="margin-bottom: 20px;">
-        <h3 id="service7" style="color: gold;"></h3>
-        <ul id="list7" style="color: white; display: none;">
-            <li>Custom orders for suits, dresses, and casual wear</li>
-            <li>Order for both individual and bulk needs</li>
-            <li>Timely delivery with premium craftsmanship</li>
-        </ul>
-    </div>
-
-    <div class="service-item" style="margin-bottom: 20px;">
-        <h3 id="service8" style="color: gold;"></h3>
-        <ul id="list8" style="color: white; display: none;">
-            <li>If you have specific needs, feel free to contact us</li>
-            <li>We offer many other design and tailoring services</li>
-            <li>Your satisfaction is our priority</li>
-        </ul>
-    </div>
-</section>
-
-<script>
-    // Function to simulate typing effect
-    function typeEffect(elementId, text, speed, callback) {
-        let i = 0;
-        let element = document.getElementById(elementId);
-        function type() {
-            if (i < text.length) {
-                element.innerHTML += text.charAt(i);
-                i++;
-                setTimeout(type, speed);
-            } else if (callback) {
-                callback();
-            }
-        }
-        type();
-    }
-
-    // Type out the content for each section
-    typeEffect("heading", "Our Services", 100);
-    typeEffect("intro", "We offer a wide range of professional design and tailoring services. Whether you're looking for custom fashion pieces or need expert tailoring, we are here to help. Here are some of the services we provide:", 3.0, function() {
-        // Once the main text is typed, reveal the service lists
-        document.getElementById('list1').style.display = 'block';
-        document.getElementById('list2').style.display = 'block';
-        document.getElementById('list3').style.display = 'block';
-        document.getElementById('list4').style.display = 'block';
-        document.getElementById('list5').style.display = 'block';
-        document.getElementById('list6').style.display = 'block';
-        document.getElementById('list7').style.display = 'block';
-        document.getElementById('list8').style.display = 'block';
-
-        // Start typing individual service names and their respective lists
-        typeEffect("service1", "Fashion Design", 100);
-        typeEffect("service2", "Men’s and Women’s Clothing Design", 100);
-        typeEffect("service3", "Children’s Clothing Design", 100);
-        typeEffect("service4", "Sample Making for Shops", 100);
-        typeEffect("service5", "T-Shirt Customization & Art Work", 100);
-        typeEffect("service6", "Tailoring Services", 100);
-        typeEffect("service7", "Clothing Orders", 100);
-        typeEffect("service8", "And Much More...", 100);
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.left = mx + 'px';
+      dot.style.top  = my + 'px';
     });
-</script>
-    <script src="//code.tidio.co/c8rwvx0qoimbujbtxzsor1re7icbvq14.js" async></script>
-    
-    <section id="contact" class="contact" style="font-family: 'Arial', sans-serif; padding: 20px; opacity: 0; transform: translateY(20px); transition: opacity 1s ease, transform 1s ease;">
-    <h2 style="font-size: 2rem; color: gold; text-align: center;">Contact Us</h2>
-    <p style="font-size: 1.2rem; color: white; text-align: center;">WhatsApp: <strong>0715980834</strong></p>
-    <p style="font-size: 1.2rem; color: white; text-align: center;">Email: <strong>zindagifashion1111@gmail.com</strong></p>
-</section>
 
-<script>
-    // Fade-in and slide-up effect for Contact Us section
-    window.onload = function() {
-        let contactSection = document.getElementById("contact");
-        
-        // Apply the effect by changing opacity and translate Y on load
-        setTimeout(function() {
-            contactSection.style.opacity = 1;
-            contactSection.style.transform = "translateY(0)";
-        }, 500);  // Delay the effect by 500ms to make it smooth
-    };
-</script>
-<br><br><br>
-    <footer>
-        <p>&copy; 2025 Zindagi fashion Website</p>
-    </footer>
+    (function animateRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(animateRing);
+    })();
+
+    document.querySelectorAll('a, button, .service-card').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        ring.style.width  = '52px';
+        ring.style.height = '52px';
+      });
+      el.addEventListener('mouseleave', () => {
+        ring.style.width  = '32px';
+        ring.style.height = '32px';
+      });
+    });
+
+    /* ─── NAV SCROLL ─────────────────────────── */
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    /* ─── MOBILE NAV ─────────────────────────── */
+    const overlay  = document.getElementById('navOverlay');
+    const toggle   = document.getElementById('navToggle');
+    const closeBtn = document.getElementById('navClose');
+
+    function openNav()  { overlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeNav() { overlay.classList.remove('open'); document.body.style.overflow = ''; }
+
+    toggle.addEventListener('click', openNav);
+    closeBtn.addEventListener('click', closeNav);
+
+    /* ─── SCROLL REVEAL ──────────────────────── */
+    const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    reveals.forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>
